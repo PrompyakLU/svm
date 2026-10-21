@@ -1,0 +1,277 @@
+[
+  {
+    "id": "v1", "code": "VUL-2026-0001", "title": "Apache Log4j2 Remote Code Execution (Log4Shell)",
+    "assetId": "a1", "assetCode": "APP-REF-001", "assetName": "ระบบควบคุมการกลั่น (Refinery Control Portal)",
+    "businessUnit": "โรงกลั่น", "cveId": "CVE-2021-44228", "cweId": "CWE-502",
+    "location": "/api/log", "port": 8443, "component": "log4j-core 2.14.1",
+    "status": "New", "riskScore": 98.5, "riskLevel": "Critical", "isKev": true,
+    "firstDetectedAt": "2026-10-01T08:12:00Z", "lastDetectedAt": "2026-10-07T06:00:00Z", "sourceSystem": "Nessus (mock)",
+    "sla": { "policyName": "Critical-7d", "startedAt": "2026-10-01T08:12:00Z", "dueDate": "2026-10-05T08:12:00Z", "breachStatus": "Breached", "remainingHours": -58 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 10.0, "normalized": 100, "contribution": 30.0 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 4, "normalized": 100, "contribution": 20.0 },
+      { "factor": "InternetExposure", "weight": 0.15, "rawValue": 1, "normalized": 100, "contribution": 15.0 },
+      { "factor": "Kev", "weight": 0.20, "rawValue": 1, "normalized": 100, "contribution": 20.0 },
+      { "factor": "ExploitAvailability", "weight": 0.15, "rawValue": 1, "normalized": 90, "contribution": 13.5 }
+    ],
+    "riskHistory": [
+      { "id": "rh1", "score": 98.5, "riskLevel": "Critical", "calculationType": "Auto", "reason": "คำนวณครั้งแรกจาก scanner import", "createdAt": "2026-10-01T08:13:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh1", "fromStatus": null, "toStatus": "New", "reason": "สร้างจากการนำเข้า Nessus", "changedBy": "system", "changedAt": "2026-10-01T08:12:00Z" }
+    ],
+    "evidence": [], "comments": [
+      { "id": "c1", "author": "สมชาย (SOC)", "body": "ยืนยันพบบนระบบ production ต้อง patch ด่วน", "createdAt": "2026-10-02T03:00:00Z" }
+    ],
+    "verification": []
+  },
+  {
+    "id": "v2", "code": "VUL-2026-0002", "title": "OpenSSL X.509 Buffer Overflow",
+    "assetId": "a2", "assetCode": "SRV-PET-014", "assetName": "เซิร์ฟเวอร์ API ปิโตรเคมี",
+    "businessUnit": "ปิโตรเคมี", "cveId": "CVE-2022-3602", "cweId": "CWE-787",
+    "location": "tcp/443", "port": 443, "component": "openssl 3.0.6",
+    "status": "Assigned", "riskScore": 91.0, "riskLevel": "Critical", "isKev": false,
+    "firstDetectedAt": "2026-09-28T10:00:00Z", "lastDetectedAt": "2026-10-06T22:00:00Z", "sourceSystem": "Qualys (mock)",
+    "sla": { "policyName": "Critical-7d", "startedAt": "2026-09-28T10:00:00Z", "dueDate": "2026-10-05T10:00:00Z", "breachStatus": "Breached", "remainingHours": -44 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 9.8, "normalized": 98, "contribution": 29.4 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 3, "normalized": 75, "contribution": 15.0 },
+      { "factor": "InternetExposure", "weight": 0.15, "rawValue": 1, "normalized": 100, "contribution": 15.0 },
+      { "factor": "ExploitAvailability", "weight": 0.15, "rawValue": 1, "normalized": 80, "contribution": 12.0 },
+      { "factor": "BusinessImpact", "weight": 0.15, "rawValue": 4, "normalized": 100, "contribution": 15.0 }
+    ],
+    "riskHistory": [
+      { "id": "rh2", "score": 91.0, "riskLevel": "Critical", "calculationType": "Auto", "createdAt": "2026-09-28T10:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh2a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-09-28T10:00:00Z" },
+      { "id": "sh2b", "fromStatus": "New", "toStatus": "Confirmed", "reason": "ยืนยันโดยทีม SOC", "changedBy": "สมหญิง (SOC)", "changedAt": "2026-09-29T04:00:00Z" },
+      { "id": "sh2c", "fromStatus": "Confirmed", "toStatus": "Assigned", "reason": "มอบหมายทีมปิโตรเคมี", "changedBy": "สมหญิง (SOC)", "changedAt": "2026-09-30T01:00:00Z" }
+    ],
+    "evidence": [], "comments": [],
+    "remediation": { "id": "t2", "title": "อัปเกรด OpenSSL เป็น 3.0.7+", "assignedTo": "วิชัย (Infra)", "team": "ทีมโครงสร้างพื้นฐาน", "dueDate": "2026-10-10T00:00:00Z", "progress": 20, "plan": "ทดสอบบน staging ก่อน rollout", "status": "InProgress" },
+    "verification": []
+  },
+  {
+    "id": "v3", "code": "VUL-2026-0003", "title": "Apache HTTP Server Path Traversal",
+    "assetId": "a3", "assetCode": "APP-HQ-003", "assetName": "เว็บไซต์ภายในองค์กร (Intranet)",
+    "businessUnit": "สำนักงานใหญ่", "cveId": "CVE-2021-41773", "cweId": "CWE-22",
+    "location": "/cgi-bin/", "port": 80, "component": "httpd 2.4.49",
+    "status": "InProgress", "riskScore": 74.0, "riskLevel": "High", "isKev": true,
+    "firstDetectedAt": "2026-09-25T09:00:00Z", "lastDetectedAt": "2026-10-05T12:00:00Z", "sourceSystem": "OpenVAS (mock)",
+    "sla": { "policyName": "High-30d", "startedAt": "2026-09-25T09:00:00Z", "dueDate": "2026-10-25T09:00:00Z", "breachStatus": "NearDue", "remainingHours": 120 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 7.5, "normalized": 75, "contribution": 22.5 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 2, "normalized": 50, "contribution": 10.0 },
+      { "factor": "InternetExposure", "weight": 0.15, "rawValue": 0, "normalized": 0, "contribution": 0.0 },
+      { "factor": "Kev", "weight": 0.20, "rawValue": 1, "normalized": 100, "contribution": 20.0 },
+      { "factor": "ExploitAvailability", "weight": 0.15, "rawValue": 1, "normalized": 70, "contribution": 10.5 }
+    ],
+    "riskHistory": [
+      { "id": "rh3", "score": 74.0, "riskLevel": "High", "calculationType": "Auto", "createdAt": "2026-09-25T09:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh3a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-09-25T09:00:00Z" },
+      { "id": "sh3b", "fromStatus": "New", "toStatus": "Confirmed", "changedBy": "สมชาย (SOC)", "changedAt": "2026-09-26T02:00:00Z" },
+      { "id": "sh3c", "fromStatus": "Confirmed", "toStatus": "Assigned", "changedBy": "หัวหน้าทีม", "changedAt": "2026-09-27T02:00:00Z" },
+      { "id": "sh3d", "fromStatus": "Assigned", "toStatus": "InProgress", "reason": "เริ่มดำเนินการแก้ไข", "changedBy": "ประยุทธ (Dev)", "changedAt": "2026-09-29T06:00:00Z" }
+    ],
+    "evidence": [
+      { "id": "e3", "fileName": "patch-plan.pdf", "type": "แผนการแก้ไข", "version": 1, "uploadedBy": "ประยุทธ (Dev)", "uploadedAt": "2026-09-30T03:00:00Z", "scanResult": "Clean" }
+    ],
+    "comments": [
+      { "id": "c3", "author": "ประยุทธ (Dev)", "body": "กำลังอัปเกรด httpd เป็น 2.4.51", "createdAt": "2026-09-29T07:00:00Z" }
+    ],
+    "remediation": { "id": "t3", "title": "อัปเกรด Apache httpd เป็น 2.4.51", "assignedTo": "ประยุทธ (Dev)", "team": "ทีมพัฒนา HQ", "dueDate": "2026-10-15T00:00:00Z", "progress": 55, "plan": "อัปเกรด + ปิด mod_cgi ที่ไม่ใช้", "status": "InProgress" },
+    "verification": []
+  },
+  {
+    "id": "v4", "code": "VUL-2026-0004", "title": "SQL Injection ในฟอร์มค้นหา",
+    "assetId": "a4", "assetCode": "APP-PORT-007", "assetName": "ระบบจัดการท่าเรือ (Port Mgmt)",
+    "businessUnit": "ท่าเรือ", "cveId": null, "cweId": "CWE-89",
+    "location": "/search?q=", "port": 443, "component": "custom-webapp",
+    "status": "PendingVerification", "riskScore": 68.0, "riskLevel": "High", "isKev": false,
+    "firstDetectedAt": "2026-09-20T05:00:00Z", "lastDetectedAt": "2026-10-04T09:00:00Z", "sourceSystem": "Manual (Pentest)",
+    "sla": { "policyName": "High-30d", "startedAt": "2026-09-20T05:00:00Z", "dueDate": "2026-10-20T05:00:00Z", "breachStatus": "OnTrack", "remainingHours": 300 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 8.1, "normalized": 81, "contribution": 24.3 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 3, "normalized": 75, "contribution": 15.0 },
+      { "factor": "InternetExposure", "weight": 0.15, "rawValue": 1, "normalized": 100, "contribution": 15.0 },
+      { "factor": "BusinessImpact", "weight": 0.15, "rawValue": 3, "normalized": 75, "contribution": 11.25 },
+      { "factor": "ExistingControl", "weight": 0.15, "rawValue": 1, "normalized": 15, "contribution": 2.25 }
+    ],
+    "riskHistory": [
+      { "id": "rh4", "score": 68.0, "riskLevel": "High", "calculationType": "Auto", "createdAt": "2026-09-20T05:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh4a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-09-20T05:00:00Z" },
+      { "id": "sh4b", "fromStatus": "New", "toStatus": "Assigned", "changedBy": "หัวหน้าทีม", "changedAt": "2026-09-21T02:00:00Z" },
+      { "id": "sh4c", "fromStatus": "Assigned", "toStatus": "InProgress", "changedBy": "นภา (Dev)", "changedAt": "2026-09-23T06:00:00Z" },
+      { "id": "sh4d", "fromStatus": "InProgress", "toStatus": "Remediated", "reason": "ใช้ parameterized query แล้ว", "changedBy": "นภา (Dev)", "changedAt": "2026-10-02T08:00:00Z" },
+      { "id": "sh4e", "fromStatus": "Remediated", "toStatus": "PendingVerification", "changedBy": "นภา (Dev)", "changedAt": "2026-10-03T02:00:00Z" }
+    ],
+    "evidence": [
+      { "id": "e4", "fileName": "fix-diff.patch", "type": "หลักฐานการแก้ไข", "version": 1, "uploadedBy": "นภา (Dev)", "uploadedAt": "2026-10-02T09:00:00Z", "scanResult": "Clean" }
+    ],
+    "comments": [],
+    "remediation": { "id": "t4", "title": "แก้ SQL injection ด้วย parameterized query", "assignedTo": "นภา (Dev)", "team": "ทีมท่าเรือ", "dueDate": "2026-10-12T00:00:00Z", "progress": 100, "plan": "แก้โค้ด + เพิ่ม input validation", "status": "Remediated" },
+    "verification": [
+      { "id": "vr4", "method": "Manual", "result": "Pending", "independentVerifier": true, "note": "รอผู้ตรวจสอบอิสระ (Critical/High ต้อง independent)" }
+    ]
+  },
+  {
+    "id": "v5", "code": "VUL-2026-0005", "title": "ใช้ TLS 1.0/1.1 ที่ล้าสมัย",
+    "assetId": "a1", "assetCode": "APP-REF-001", "assetName": "ระบบควบคุมการกลั่น (Refinery Control Portal)",
+    "businessUnit": "โรงกลั่น", "cveId": null, "cweId": "CWE-327",
+    "location": "tcp/8443", "port": 8443, "component": "nginx tls-config",
+    "status": "Remediated", "riskScore": 52.0, "riskLevel": "Medium", "isKev": false,
+    "firstDetectedAt": "2026-09-15T05:00:00Z", "lastDetectedAt": "2026-10-01T09:00:00Z", "sourceSystem": "Qualys (mock)",
+    "sla": { "policyName": "Medium-60d", "startedAt": "2026-09-15T05:00:00Z", "dueDate": "2026-11-14T05:00:00Z", "breachStatus": "OnTrack", "remainingHours": 900 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 5.3, "normalized": 53, "contribution": 15.9 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 4, "normalized": 100, "contribution": 20.0 },
+      { "factor": "InternetExposure", "weight": 0.15, "rawValue": 0, "normalized": 0, "contribution": 0.0 },
+      { "factor": "BusinessImpact", "weight": 0.15, "rawValue": 2, "normalized": 50, "contribution": 7.5 },
+      { "factor": "ExistingControl", "weight": 0.15, "rawValue": 2, "normalized": 60, "contribution": 9.0 }
+    ],
+    "riskHistory": [
+      { "id": "rh5", "score": 52.0, "riskLevel": "Medium", "calculationType": "Auto", "createdAt": "2026-09-15T05:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh5a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-09-15T05:00:00Z" },
+      { "id": "sh5b", "fromStatus": "New", "toStatus": "Assigned", "changedBy": "หัวหน้าทีม", "changedAt": "2026-09-18T02:00:00Z" },
+      { "id": "sh5c", "fromStatus": "Assigned", "toStatus": "Remediated", "reason": "ปิด TLS 1.0/1.1 แล้ว", "changedBy": "วิชัย (Infra)", "changedAt": "2026-10-01T09:00:00Z" }
+    ],
+    "evidence": [], "comments": [],
+    "remediation": { "id": "t5", "title": "ปิด TLS 1.0/1.1 เหลือ 1.2/1.3", "assignedTo": "วิชัย (Infra)", "team": "ทีมโครงสร้างพื้นฐาน", "dueDate": "2026-10-20T00:00:00Z", "progress": 100, "status": "Remediated" },
+    "verification": []
+  },
+  {
+    "id": "v6", "code": "VUL-2026-0006", "title": "ขาด HTTP Security Headers",
+    "assetId": "a3", "assetCode": "APP-HQ-003", "assetName": "เว็บไซต์ภายในองค์กร (Intranet)",
+    "businessUnit": "สำนักงานใหญ่", "cveId": null, "cweId": "CWE-693",
+    "location": "/", "port": 443, "component": "web-config",
+    "status": "Confirmed", "riskScore": 44.0, "riskLevel": "Medium", "isKev": false,
+    "firstDetectedAt": "2026-10-03T05:00:00Z", "lastDetectedAt": "2026-10-06T09:00:00Z", "sourceSystem": "OpenVAS (mock)",
+    "sla": { "policyName": "Medium-60d", "startedAt": "2026-10-03T05:00:00Z", "dueDate": "2026-12-02T05:00:00Z", "breachStatus": "OnTrack", "remainingHours": 1300 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 4.3, "normalized": 43, "contribution": 12.9 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 2, "normalized": 50, "contribution": 10.0 },
+      { "factor": "BusinessImpact", "weight": 0.15, "rawValue": 2, "normalized": 50, "contribution": 7.5 }
+    ],
+    "riskHistory": [
+      { "id": "rh6", "score": 44.0, "riskLevel": "Medium", "calculationType": "Auto", "createdAt": "2026-10-03T05:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh6a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-10-03T05:00:00Z" },
+      { "id": "sh6b", "fromStatus": "New", "toStatus": "Confirmed", "changedBy": "สมชาย (SOC)", "changedAt": "2026-10-04T02:00:00Z" }
+    ],
+    "evidence": [], "comments": [], "verification": []
+  },
+  {
+    "id": "v7", "code": "VUL-2026-0007", "title": "ข้อความ error เปิดเผยข้อมูลภายใน",
+    "assetId": "a2", "assetCode": "SRV-PET-014", "assetName": "เซิร์ฟเวอร์ API ปิโตรเคมี",
+    "businessUnit": "ปิโตรเคมี", "cveId": null, "cweId": "CWE-209",
+    "location": "/api/*", "port": 443, "component": "api-error-handler",
+    "status": "Closed", "riskScore": 24.0, "riskLevel": "Low", "isKev": false,
+    "firstDetectedAt": "2026-08-20T05:00:00Z", "lastDetectedAt": "2026-09-10T09:00:00Z", "sourceSystem": "Manual",
+    "sla": { "policyName": "Low-90d", "startedAt": "2026-08-20T05:00:00Z", "dueDate": "2026-11-18T05:00:00Z", "breachStatus": "Met", "remainingHours": 0 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 3.1, "normalized": 31, "contribution": 9.3 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 3, "normalized": 75, "contribution": 15.0 }
+    ],
+    "riskHistory": [
+      { "id": "rh7", "score": 24.0, "riskLevel": "Low", "calculationType": "Auto", "createdAt": "2026-08-20T05:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh7a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-08-20T05:00:00Z" },
+      { "id": "sh7b", "fromStatus": "New", "toStatus": "Remediated", "changedBy": "นภา (Dev)", "changedAt": "2026-09-01T06:00:00Z" },
+      { "id": "sh7c", "fromStatus": "Remediated", "toStatus": "Verified", "changedBy": "ผู้ตรวจสอบ", "changedAt": "2026-09-08T06:00:00Z" },
+      { "id": "sh7d", "fromStatus": "Verified", "toStatus": "Closed", "reason": "ยืนยันแก้ไขเรียบร้อย", "changedBy": "หัวหน้าทีม", "changedAt": "2026-09-10T09:00:00Z" }
+    ],
+    "evidence": [], "comments": [],
+    "verification": [
+      { "id": "vr7", "method": "Manual", "result": "Passed", "verifiedBy": "ผู้ตรวจสอบ", "verifiedAt": "2026-09-08T06:00:00Z", "independentVerifier": true }
+    ]
+  },
+  {
+    "id": "v8", "code": "VUL-2026-0008", "title": "Spring4Shell RCE",
+    "assetId": "a5", "assetCode": "APP-REF-009", "assetName": "ระบบรายงานการผลิต (Refinery Reporting)",
+    "businessUnit": "โรงกลั่น", "cveId": "CVE-2022-22965", "cweId": "CWE-94",
+    "location": "/report", "port": 8080, "component": "spring-beans 5.3.17",
+    "status": "Reopened", "riskScore": 95.0, "riskLevel": "Critical", "isKev": true,
+    "firstDetectedAt": "2026-09-10T05:00:00Z", "lastDetectedAt": "2026-10-07T05:00:00Z", "sourceSystem": "Nessus (mock)",
+    "sla": { "policyName": "Critical-7d", "startedAt": "2026-10-05T05:00:00Z", "dueDate": "2026-10-12T05:00:00Z", "breachStatus": "NearDue", "remainingHours": 60 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 9.8, "normalized": 98, "contribution": 29.4 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 4, "normalized": 100, "contribution": 20.0 },
+      { "factor": "Kev", "weight": 0.20, "rawValue": 1, "normalized": 100, "contribution": 20.0 },
+      { "factor": "InternetExposure", "weight": 0.15, "rawValue": 1, "normalized": 100, "contribution": 15.0 },
+      { "factor": "ExploitAvailability", "weight": 0.15, "rawValue": 1, "normalized": 71, "contribution": 10.6 }
+    ],
+    "riskHistory": [
+      { "id": "rh8a", "score": 95.0, "riskLevel": "Critical", "calculationType": "Auto", "createdAt": "2026-09-10T05:01:00Z", "createdBy": "system" },
+      { "id": "rh8b", "score": 95.0, "riskLevel": "Critical", "calculationType": "Recalc", "reason": "พบช่องโหว่ซ้ำหลังปิดงาน → reopen", "previousScore": 95.0, "createdAt": "2026-10-05T05:00:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh8a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-09-10T05:00:00Z" },
+      { "id": "sh8b", "fromStatus": "New", "toStatus": "Remediated", "changedBy": "ประยุทธ (Dev)", "changedAt": "2026-09-25T06:00:00Z" },
+      { "id": "sh8c", "fromStatus": "Remediated", "toStatus": "Closed", "changedBy": "หัวหน้าทีม", "changedAt": "2026-09-30T06:00:00Z" },
+      { "id": "sh8d", "fromStatus": "Closed", "toStatus": "Reopened", "reason": "scan รอบใหม่พบช่องโหว่เดิม (BR-13)", "changedBy": "system", "changedAt": "2026-10-05T05:00:00Z" }
+    ],
+    "evidence": [], "comments": [
+      { "id": "c8", "author": "หัวหน้าทีม", "body": "patch เดิมไม่ครอบคลุม ต้องตรวจสอบ config ใหม่", "createdAt": "2026-10-05T07:00:00Z" }
+    ],
+    "verification": [
+      { "id": "vr8", "method": "Rescan", "result": "Failed", "verifiedBy": "system", "verifiedAt": "2026-10-05T05:00:00Z", "independentVerifier": false, "note": "rescan พบช่องโหว่ยังอยู่" }
+    ]
+  },
+  {
+    "id": "v9", "code": "VUL-2026-0009", "title": "ใช้ไลบรารี jQuery เวอร์ชันเก่า",
+    "assetId": "a3", "assetCode": "APP-HQ-003", "assetName": "เว็บไซต์ภายในองค์กร (Intranet)",
+    "businessUnit": "สำนักงานใหญ่", "cveId": "CVE-2020-11022", "cweId": "CWE-79",
+    "location": "/assets/jquery.js", "port": 443, "component": "jquery 3.4.1",
+    "status": "RiskAccepted", "riskScore": 61.0, "riskLevel": "High", "isKev": false,
+    "firstDetectedAt": "2026-08-01T05:00:00Z", "lastDetectedAt": "2026-09-28T09:00:00Z", "sourceSystem": "OpenVAS (mock)",
+    "sla": { "policyName": "High-30d", "startedAt": "2026-08-01T05:00:00Z", "dueDate": "2026-08-31T05:00:00Z", "breachStatus": "Met", "remainingHours": 0 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 6.1, "normalized": 61, "contribution": 18.3 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 2, "normalized": 50, "contribution": 10.0 },
+      { "factor": "BusinessImpact", "weight": 0.15, "rawValue": 2, "normalized": 50, "contribution": 7.5 }
+    ],
+    "riskHistory": [
+      { "id": "rh9", "score": 61.0, "riskLevel": "High", "calculationType": "Auto", "createdAt": "2026-08-01T05:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh9a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-08-01T05:00:00Z" },
+      { "id": "sh9b", "fromStatus": "New", "toStatus": "Confirmed", "changedBy": "สมชาย (SOC)", "changedAt": "2026-08-03T02:00:00Z" },
+      { "id": "sh9c", "fromStatus": "Confirmed", "toStatus": "RiskAccepted", "reason": "ยอมรับความเสี่ยงชั่วคราว รอ sprint หน้า (อนุมัติโดยผู้บริหาร)", "changedBy": "ผู้จัดการความเสี่ยง", "changedAt": "2026-08-10T04:00:00Z" }
+    ],
+    "evidence": [], "comments": [], "verification": []
+  },
+  {
+    "id": "v10", "code": "VUL-2026-0010", "title": "Cookie ขาดแฟลก Secure/HttpOnly",
+    "assetId": "a4", "assetCode": "APP-PORT-007", "assetName": "ระบบจัดการท่าเรือ (Port Mgmt)",
+    "businessUnit": "ท่าเรือ", "cveId": null, "cweId": "CWE-614",
+    "location": "/login", "port": 443, "component": "session-config",
+    "status": "Verified", "riskScore": 29.0, "riskLevel": "Low", "isKev": false,
+    "firstDetectedAt": "2026-09-05T05:00:00Z", "lastDetectedAt": "2026-10-02T09:00:00Z", "sourceSystem": "Manual",
+    "sla": { "policyName": "Low-90d", "startedAt": "2026-09-05T05:00:00Z", "dueDate": "2026-12-04T05:00:00Z", "breachStatus": "OnTrack", "remainingHours": 1400 },
+    "riskBreakdown": [
+      { "factor": "CVSS", "weight": 0.30, "rawValue": 3.7, "normalized": 37, "contribution": 11.1 },
+      { "factor": "AssetCriticality", "weight": 0.20, "rawValue": 3, "normalized": 75, "contribution": 15.0 }
+    ],
+    "riskHistory": [
+      { "id": "rh10", "score": 29.0, "riskLevel": "Low", "calculationType": "Auto", "createdAt": "2026-09-05T05:01:00Z", "createdBy": "system" }
+    ],
+    "statusHistory": [
+      { "id": "sh10a", "fromStatus": null, "toStatus": "New", "changedBy": "system", "changedAt": "2026-09-05T05:00:00Z" },
+      { "id": "sh10b", "fromStatus": "New", "toStatus": "Remediated", "changedBy": "นภา (Dev)", "changedAt": "2026-09-20T06:00:00Z" },
+      { "id": "sh10c", "fromStatus": "Remediated", "toStatus": "Verified", "reason": "ตรวจสอบผ่าน", "changedBy": "ผู้ตรวจสอบ", "changedAt": "2026-10-02T09:00:00Z" }
+    ],
+    "evidence": [], "comments": [],
+    "verification": [
+      { "id": "vr10", "method": "Manual", "result": "Passed", "verifiedBy": "ผู้ตรวจสอบ", "verifiedAt": "2026-10-02T09:00:00Z", "independentVerifier": true }
+    ]
+  }
+]

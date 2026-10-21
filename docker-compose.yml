@@ -1,0 +1,79 @@
+# SVM full stack — รัน local ครบ web + api + sqlserver ด้วย container
+# ยังไม่ deploy จริง (AWS ECS Fargate เป็น Day 2/3 — ดู docs/deploy/README.md)
+#
+# วิธีใช้:
+#   1) คัดลอก .env.example เป็น .env แล้วเติมค่า secret (ไม่ commit .env)
+#   2) docker compose build
+#   3) docker compose up -d
+#   4) รัน migration ครั้งแรก:  docker compose run --rm migrate
+#   5) เปิด http://localhost:8080  (web → proxy /api → api)
+#
+# secret ทั้งหมดอ่านจาก .env — ไม่มีค่า default ที่ commit ลง repo (NFR-16 / secrets policy)
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-CU16-ubuntu-22.04
+    container_name: svm-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${SVM_SA_PASSWORD:?ตั้งค่า SVM_SA_PASSWORD ใน .env ก่อน}
+    ports:
+      - "127.0.0.1:1433:1433"   # loopback เท่านั้น
+    volumes:
+      - svm-sqldata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" -b -o /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  # one-off: apply EF Core migrations แล้วจบ (รันก่อน api ครั้งแรก / หลังมี migration ใหม่)
+  migrate:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: build        # ใช้ SDK stage ที่มี dotnet-ef ได้
+    container_name: svm-migrate
+    working_dir: /src
+    environment:
+      ConnectionStrings__Svm: ${SVM_CONNECTION_STRING:?ตั้งค่า SVM_CONNECTION_STRING ใน .env ก่อน}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - 'dotnet tool install --global dotnet-ef --version 10.0.12; /root/.dotnet/tools/dotnet-ef database update -p src/SvmApi.Infrastructure -s src/SvmApi.Api'
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    profiles: ["tools"]    # ไม่ขึ้นตอน up ปกติ — เรียกด้วย: docker compose run --rm migrate
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: svm-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Svm: ${SVM_CONNECTION_STRING:?ตั้งค่า SVM_CONNECTION_STRING ใน .env ก่อน}
+      Auth__Jwt__SigningKey: ${SVM_JWT_SIGNING_KEY:?ตั้งค่า SVM_JWT_SIGNING_KEY ใน .env ก่อน (>=32 bytes สุ่ม)}
+      Integration__UseMock: "true"
+      Seed__Enabled: ${SVM_SEED_ENABLED:-true}
+      Seed__DemoPassword: ${SVM_SEED_DEMO_PASSWORD:-}
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    # หมายเหตุ: api ไม่ redirect https เพราะ nginx ส่ง X-Forwarded-Proto=https มาให้
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: svm-web
+    ports:
+      - "127.0.0.1:8088:8080"   # เข้าใช้งานที่ http://localhost:8088 (8080 บน host ถูกจอง)
+    depends_on:
+      - api
+
+volumes:
+  svm-sqldata:

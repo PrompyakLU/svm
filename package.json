@@ -1,0 +1,10 @@
+{
+  "name": "svm-qa-automation",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "QA automation harness (Playwright) for SVM — isolated from web/ and api/",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}

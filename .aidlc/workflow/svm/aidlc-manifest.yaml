@@ -1,0 +1,114 @@
+version: "1.0.0"
+feature: "svm"
+language: "th"
+platform: "kiro"
+created: "2026-10-08T00:00:00Z"
+updated: "2026-10-08T01:10:00Z"
+state:
+  status: "active"
+  scope: "new"
+  sharedPhases: ["context", "requirements", "design", "tasks"]
+  mode: "comprehensive"
+  foundationSkipped: false
+  implementationMode: "standard"
+  quickPath: false
+  teamSize: "solo"
+artifacts:
+  context:
+    status: "approved"
+    timestamp: "2026-10-08T00:10:00Z"
+    files: [context.md]
+  requirements:
+    status: "approved"
+    timestamp: "2026-10-08T00:25:00Z"
+    files: [requirements.md, personas.md]
+  design:
+    status: "approved"
+    timestamp: "2026-10-08T00:50:00Z"
+    files:
+      - design.md
+      - design/components.md
+      - design/data-model.md
+      - design/api-spec.md
+      - design/integration.md
+      - design/implementation.md
+      - design/operations.md
+      - design/nfr.md
+      - design/testing-strategy.md
+  tasks:
+    status: "approved"
+    timestamp: "2026-10-08T01:10:00Z"
+    files: [tasks.md]
+    totalTasks: 28
+versions:
+  dotnet: "10.0"
+  csharp: "14"
+  efcore: "10"
+  angular: "22.0"
+  node: "24"
+  sqlserver: "2022+"
+  source: "web-search (2026-10-08)"
+implementation:
+  totalTasks: 28
+  completedTasks: 27
+  currentTask: "8.1"
+  currentWave: 7
+context-summary:
+  type: "Greenfield"
+  scope: "new"
+  stack: "Angular 22 + Tailwind 4 + daisyUI 5 / ASP.NET Core .NET 10 + EF Core 10 / SQL Server"
+  architecture: "Layered modular monolith (web + API), REST /api/v1"
+  feature: "Security Vulnerability Management (SVM) platform — รวมศูนย์ ประเมินความเสี่ยง และบริหารวงจรช่องโหว่"
+  impact: "New standalone"
+  complexity: "High"
+  teamSize: null
+  recommendations: { personas: true, units: false, nfr: true }
+decisions:
+  context:
+    database: "SQL Server (project decision, EF Core SqlServer provider)"
+    scopeChoice: "Core end-to-end slice first, then expand (user choice 1-B)"
+    techStack: "dipd-mcp approved baseline (user choice 3)"
+    mode: "comprehensive — decomposition skipped per hands-on-project policy"
+  design:
+    repoStructure: "Single repo: web/ (Angular) + api/ (.NET: Api/Application/Domain/Infrastructure)"
+    apiLayering: "Layered/Clean-ish"
+    riskScoringEngine: "Weighted-sum service + DB-config weights, normalize 0-100, runtime recalc"
+    workflowTransition: "State machine table-driven (transitions + guards in config/DB)"
+    mockAdapters: "Interface + Mock impl + seed data, DI/config toggle (UseMock)"
+    authImplementation: "Local JWT + policy-based authz + role/scope claims behind IAuthProvider (OIDC-ready)"
+    apiPagination: "Offset pagination + query filters + sort"
+    auditImmutability: "Append-only + no update/delete + restricted DB perm + hash chain"
+    testingScope: "Minimal + verify-by-running (unit test core logic)"
+    propertyBasedTesting: "No — example-based + invariant assertions"
+    observability: "Minimal — structured logging + health endpoint"
+    errorTracking: "Log-based only"
+    healthLifecycle: "Basic health endpoint only"
+    validation: "No conflicts"
+  tasks:
+    breakdownStrategy: "Vertical feature slice (FE→API→DB per flow)"
+    testTiming: "Test-after core logic + verify-by-running each wave"
+    buildPriority: "Foundation (Auth+Asset+Reference) → Intake/DQ → Risk → Workflow/Assignment → SLA → Verification → Dashboard/Admin/Audit"
+    integrationStrategy: "Mock adapter + seed from task 1, UseMock=true default, interface seam"
+    testingScope: "Unit (xUnit) core logic 4 points + verify-by-running; no E2E/load/property"
+    taskGranularity: "Single-concern (~0.5–2 days each)"
+    executionModel: "Sequential waves per hands-on-project policy, stop-gate per wave"
+    validation: "No blocking conflicts (capacity/testing rules mitigated)"
+  requirements:
+    coreSliceScope: "Core + SLA & Verification"
+    intakeChannels: "File Import (CSV/JSON) + Manual; Scanner API = mock (deferred)"
+    riskScoringModel: "Weighted configurable (weights in config/master data)"
+    authentication: "Local/mock auth provider behind interface (OIDC-ready)"
+    personaDepth: "Core-flow personas (8 roles) + summary of rest"
+    createPersonas: true
+    dashboardScope: "Operations + Executive (summary) dashboards + Advanced Search/Filter"
+    nfrAnalysis: true
+    outOfScope: "Real scanner API, SIEM/ITSM/Email/Teams, full compensating control, detailed report/export, archiving/retention automation, DR/backup, auto reference-data sync (seed used)"
+    teamSize: "Solo (1 developer)"
+    validation: "No outstanding conflicts — high-severity rules mitigated by MVP scoping, mocks, NFR-on"
+steering:
+  updatedBy:
+    product: [context, requirements]
+    tech: [context, design]
+    structure: [context, design]
+    resources: [context]
+units: []

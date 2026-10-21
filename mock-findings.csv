@@ -1,0 +1,16 @@
+assetCode,sourceSystem,sourceRecordId,findingName,severity,cveId,cweId,cvssVersion,cvssBaseScore,cvssVector,location,port,component,detectedAt
+SVM-APP-001,PentestTeam,PT-2026-001,Apache Log4j2 JNDI RCE (Log4Shell),Critical,CVE-2021-44228,CWE-502,3.1,10.0,CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H,https://portal.svm.example/login,443,log4j-core@2.14.1,2026-10-02T08:00:00Z
+SVM-APP-001,SAST,SAST-7781,SQL Injection in login form,High,,CWE-89,3.1,8.6,CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N,https://portal.svm.example/login,443,,2026-10-03T09:15:00Z
+SVM-APP-002,DAST,DAST-5521,Reflected Cross-Site Scripting,Medium,,CWE-79,3.1,6.1,CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N,https://api.svm.example/search,443,,2026-10-04T10:30:00Z
+SVM-APP-002,SCA,SCA-3310,Spring Framework RCE (Spring4Shell),Critical,CVE-2022-22965,CWE-94,3.1,9.8,CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H,https://api.svm.example,443,spring-webmvc@5.3.17,2026-10-05T11:45:00Z
+SVM-SRV-001,InfraScanner,INF-9001,OpenSSL Heartbleed information disclosure,High,CVE-2014-0160,CWE-125,3.1,7.5,CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N,web01.svm.example,443,openssl@1.0.1,2026-10-01T07:00:00Z
+SVM-SRV-001,InfraScanner,INF-9002,Deprecated TLS 1.0 enabled,Low,,CWE-327,3.1,3.7,CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N,web01.svm.example,443,,2026-10-06T07:30:00Z
+SVM-SRV-002,InfraScanner,INF-9050,SMBv1 EternalBlue remote code execution,Critical,CVE-2017-0144,CWE-20,3.1,8.1,CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H,file01.internal.svm.example,445,,2026-10-02T12:00:00Z
+SVM-DB-001,ManualAssessment,MA-2026-11,Use of hard-coded database credentials,High,,CWE-798,3.1,7.8,CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H,fin-db01.internal.svm.example,1433,,2026-10-07T13:20:00Z
+SVM-DB-002,InfraScanner,INF-9120,SWEET32 birthday attack on 3DES,Medium,CVE-2016-2183,CWE-327,3.1,5.9,CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N,hr-db01.internal.svm.example,1433,,2026-10-08T14:10:00Z
+SVM-NET-001,InfraScanner,INF-9200,Citrix NetScaler buffer overflow (Citrix Bleed),Critical,CVE-2023-4966,CWE-125,3.1,9.4,CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:L/A:N,fw01.svm.example,443,,2026-10-03T15:00:00Z
+SVM-APP-003,DAST,DAST-5588,Cross-Site Request Forgery on profile update,Medium,,CWE-352,3.1,6.5,CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:L/A:N,https://hr.internal.svm.example/profile,443,,2026-10-09T09:40:00Z
+SVM-CLD-001,CloudScanner,CLD-7700,curl SOCKS5 heap buffer overflow,High,CVE-2023-38545,CWE-787,3.1,7.5,CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:L,cloud-res-reports-001,,curl@8.3.0,2026-10-10T16:25:00Z
+SVM-CTR-001,SCA,SCA-3401,xz/liblzma upstream backdoor,Critical,CVE-2024-3094,CWE-506,3.1,10.0,CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H,registry.svm.example/payments/payment-service,,liblzma@5.6.0,2026-10-04T17:50:00Z
+SVM-SRV-003,DAST,DAST-5601,Verbose error messages expose stack trace,Low,,CWE-209,3.1,3.1,CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N,stg-app01.internal.svm.example,8080,,2026-10-11T08:05:00Z
+SVM-APP-002,PentestTeam,PT-2026-014,OpenSSL X.509 punycode buffer overflow,Medium,CVE-2022-3602,CWE-787,3.1,6.5,CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:H,https://api.svm.example,443,openssl@3.0.6,2026-10-12T10:15:00Z

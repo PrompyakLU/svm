@@ -1,0 +1,132 @@
+<header class="page-head dashboard-head">
+  <div><h1>ภาพรวมความปลอดภัย</h1><p class="page-description">จัดลำดับงานเร่งด่วนและติดตามความเสี่ยง</p></div>
+  <span class="scope-label"><app-icon name="building" [size]="17" /> {{ data()?.organizationWide === false ? 'หน่วยงานที่คุณมีสิทธิ์' : 'ทุกหน่วยธุรกิจ' }}</span>
+</header>
+<p class="data-context" role="note"><app-icon name="clock" [size]="16" />
+  <span>@if (isMock) { ข้อมูลจำลอง · }@if (data()?.generatedAt; as generatedAt) { ข้อมูล ณ {{ generatedAt | date:'medium' }} · SLA คำนวณ ณ เวลาที่อ่านข้อมูล } @else { ข้อมูลชุดนี้ไม่ระบุวันเวลาอ้างอิง จำนวนวันที่เหลือและเกินกำหนดใช้ค่าที่บันทึกไว้ }</span>
+</p>
+
+@if (loading()) {
+  <app-state-block mode="loading" message="กำลังโหลดภาพรวมความปลอดภัย" />
+} @else if (error()) {
+  <div class="panel recovery"><app-state-block mode="error" message="โหลดภาพรวมไม่สำเร็จ ลองโหลดข้อมูลอีกครั้ง" />
+    <button type="button" class="btn-outline" (click)="retrySummary()">ลองอีกครั้ง</button>
+  </div>
+} @else if (data(); as d) {
+  <section class="metrics" aria-label="สรุปความเสี่ยงตามชุดข้อมูล">
+    <a class="metric metric--critical" routerLink="/vulnerabilities" [queryParams]="{ risk: 'Critical', open: true }">
+      <span class="metric__icon"><app-icon name="alert" [size]="24" /></span>
+      <div><h2>วิกฤต</h2><strong>{{ d.critical | number }}</strong></div><p>ช่องโหว่ที่มีความเสี่ยงวิกฤต</p>
+    </a>
+    <a class="metric metric--critical" routerLink="/vulnerabilities" [queryParams]="{ sla: 'Breached', open: true }">
+      <span class="metric__icon"><app-icon name="clock" [size]="24" /></span>
+      <div><h2>เกิน SLA</h2><strong>{{ d.slaBreaches | number }}</strong></div><p>ช่องโหว่ที่เกินกำหนดแก้ไข</p>
+    </a>
+    <a class="metric metric--high" routerLink="/vulnerabilities" [queryParams]="{ kev: true, open: true }">
+      <span class="metric__icon"><app-icon name="shield" [size]="24" /></span>
+      <div><h2>KEV ที่เปิดอยู่</h2><strong>{{ d.kevOpen | number }}</strong></div><p>มีรายงานการนำไปใช้โจมตีจริง</p>
+    </a>
+    <div class="secondary-metrics">
+      <p class="snapshot-label">สรุปจากแหล่งข้อมูล</p>
+      <dl><div><dt>ช่องโหว่ที่เปิดอยู่</dt><dd>{{ d.totalOpen | number }}</dd></div>
+        <div><dt>ความเสี่ยงสูง</dt><dd>{{ d.high | number }}</dd></div>
+        <div><dt>เวลาเฉลี่ยในการแก้ไข</dt><dd>@if (d.meanTimeToRemediateDays !== null) { {{ d.meanTimeToRemediateDays | number:'1.0-1' }} <small>วัน</small> } @else { — }</dd></div></dl>
+    </div>
+  </section>
+}
+
+@if (canReadInstances()) {
+<section class="panel urgent-panel" aria-labelledby="urgent-heading">
+  <div class="section-head">
+    <div><h2 id="urgent-heading">งานที่ต้องจัดการก่อน</h2><p>เรียงตามกำหนด SLA ที่ใกล้ที่สุด แล้วตามคะแนนความเสี่ยง</p></div>
+    <a routerLink="/vulnerabilities" [queryParams]="fullListParams()" class="btn-link">ดูรายการทั้งหมด <app-icon name="arrow-right" [size]="16" /></a>
+  </div>
+  <div class="queue-filters" role="group" aria-label="เลือกกลุ่มงานเร่งด่วน">
+    @for (option of queueOptions; track option.key) {
+      <button type="button" class="queue-filter" [class.queue-filter--active]="queue() === option.key"
+        [class.queue-filter--overdue]="option.key === 'overdue'" [attr.aria-pressed]="queue() === option.key"
+        (click)="selectQueue(option.key)">{{ option.label }}</button>
+    }
+  </div>
+  <app-dashboard-help />
+  <p class="sr-only queue-result-status" role="status" aria-atomic="true">{{ queueResultMessage() }}</p>
+  <div class="queue-content" [attr.aria-busy]="queueLoading()">
+    @if (queueLoading()) {
+      <app-state-block mode="loading" message="กำลังโหลดงานเร่งด่วน" [announce]="false" />
+    } @else if (queueError()) {
+      <div class="recovery"><app-state-block mode="error" message="โหลดรายการไม่สำเร็จ ลองอีกครั้งเพื่อดูงานในกลุ่มนี้" [announce]="false" />
+        <button type="button" class="btn-outline" (click)="retryQueue()">ลองอีกครั้ง</button></div>
+    } @else if (queueData(); as result) {
+      @if (result.items.length === 0) {
+        <div class="queue-empty"><app-icon name="check" [size]="30" />
+          <h3>ไม่มีงานในกลุ่มนี้</h3><p>เลือกกลุ่มอื่น หรือดูช่องโหว่ทั้งหมดเพื่อติดตามงานต่อ</p>
+          <a routerLink="/vulnerabilities" class="btn-outline">ดูช่องโหว่ทั้งหมด</a></div>
+      } @else {
+        <div class="urgent-table-scroll" tabindex="0" role="region" aria-label="ตารางงานเร่งด่วน เลื่อนแนวนอนเพื่อดูข้อมูลทั้งหมด">
+          <table class="data urgent-table">
+            <caption class="sr-only">รายการช่องโหว่เร่งด่วน พร้อมความเสี่ยง สถานะ กำหนดแก้ไข และผู้รับผิดชอบ</caption>
+            <thead><tr><th scope="col">ช่องโหว่ / Asset</th><th scope="col">ความเสี่ยง</th><th scope="col">คะแนน</th><th scope="col">สถานะ</th><th scope="col">กำหนดแก้ไข</th><th scope="col">ผู้รับผิดชอบ</th><th scope="col"><span class="sr-only">การดำเนินการ</span></th></tr></thead>
+            <tbody>
+              @for (v of result.items; track v.id) {
+                <tr>
+                  <td class="vuln-cell"><a [routerLink]="['/vulnerabilities', v.id]" class="vuln-title">{{ v.title }}</a>
+                    <div class="vuln-meta">{{ v.code }} <span>·</span> {{ v.assetCode }} @if (v.isKev) { <span class="kev-tag" title="Known Exploited Vulnerability">KEV</span> }</div></td>
+                  <td><app-risk-badge [level]="v.riskLevel" /></td>
+                  <td class="mono score">{{ v.riskScore | number:'1.1-1' }}</td>
+                  <td><app-status-badge [status]="v.status" /></td>
+                  <td><time [attr.datetime]="v.sla.dueDate">{{ v.sla.dueDate | date:'dd MMM yyyy' }}</time>
+                    <span class="deadline" [class.deadline--overdue]="v.sla.breachStatus === 'Breached'">{{ timeLabel(v) }}</span></td>
+                  <td><span class="owner"><span class="owner__avatar" aria-hidden="true"><app-icon name="user" [size]="16" /></span>{{ v.assignedTo || 'ยังไม่มอบหมาย' }}</span></td>
+                  <td><a [routerLink]="['/vulnerabilities', v.id]" class="btn-outline open-task" [attr.aria-label]="'เปิดงาน ' + v.code">เปิดงาน <app-icon name="arrow-right" [size]="15" /></a></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <ul class="urgent-cards" aria-label="รายการงานเร่งด่วน">
+          @for (v of result.items; track v.id) {
+            <li><app-urgent-card [vulnerability]="v" [timeLabel]="timeLabel(v)" /></li>
+          }
+        </ul>
+        <p class="queue-count">แสดง {{ result.items.length }} จาก {{ result.total | number }} รายการ</p>
+      }
+    }
+  </div>
+</section>
+}
+
+@if (data(); as d) {
+  <section class="analytics" aria-label="ภาพรวมและแนวโน้ม">
+    <section class="panel trend-panel" aria-labelledby="trend-heading">
+      <div class="section-head"><div><h2 id="trend-heading">{{ d.trendMeaning === 'new' ? 'แนวโน้มช่องโหว่ที่พบใหม่' : 'แนวโน้มช่องโหว่ที่เปิดอยู่' }}</h2><p>{{ d.trendPeriod === 'week' ? 'จำนวนที่พบใหม่ในแต่ละสัปดาห์' : 'จำนวนที่ยังเปิดอยู่ในแต่ละวันที่แหล่งข้อมูลระบุ' }}</p></div></div>
+      @if (d.trendLast7Days.length) {
+        <figure class="trend-chart"><div class="trend-bars">
+          @for (day of d.trendLast7Days; track day.key) {
+            <div class="trend-column"><span class="trend-value">{{ day.count | number }}</span>
+              <div class="trend-track"><span class="trend-fill" [style.height.%]="day.count / trendMax() * 85" aria-hidden="true"></span></div>
+              <span class="trend-date">{{ day.key }}</span></div>
+          }
+        </div><figcaption><span class="chart-dot" aria-hidden="true"></span>{{ d.trendMeaning === 'new' ? 'จำนวนที่พบใหม่ตามช่วงเวลา ไม่ใช่ยอดช่องโหว่ที่ยังเปิดอยู่' : 'จำนวนที่ยังเปิดอยู่ ไม่ใช่จำนวนที่พบใหม่' }}</figcaption></figure>
+      } @else { <app-state-block mode="empty" message="ยังไม่มีข้อมูลแนวโน้ม" /> }
+    </section>
+    <section class="panel risk-panel" aria-labelledby="risk-heading">
+      <h2 id="risk-heading">ระดับความเสี่ยง</h2><p class="panel-subtitle">ตามชุดข้อมูลสรุป · {{ riskTotal() | number }} รายการ</p>
+      @if (riskTotal() > 0) {
+        <div class="risk-stack" aria-hidden="true">@for (r of d.byRiskLevel; track r.key) {
+          <span [style.flex-grow]="r.count" [style.background]="riskColors[r.key] || 'var(--color-brand-primary)'"></span>
+        }</div>
+        <ul class="risk-legend">@for (r of d.byRiskLevel; track r.key) {
+          <li><span><span class="chart-dot" [style.background]="riskColors[r.key]" aria-hidden="true"></span>{{ riskLabels[r.key] || r.key }}</span><strong>{{ r.count | number }}</strong></li>
+        }</ul>
+      } @else { <p class="muted">ยังไม่มีข้อมูลระดับความเสี่ยง</p> }
+      <div class="analytics-divider"></div><h3>สถานะ SLA</h3>
+      <app-bar-list [data]="d.slaByStatus" [labelMap]="slaLabels" [colorMap]="slaColors" emptyMessage="ยังไม่มีข้อมูลสถานะ SLA" />
+    </section>
+    <section class="panel workload-panel" aria-labelledby="workload-heading">
+      <h2 id="workload-heading">สถานะงาน</h2><p class="panel-subtitle analytics-scope">รวมทุกสถานะในชุดข้อมูล · {{ statusTotal() | number }} รายการ</p>
+      <app-bar-list [data]="d.byStatus" [labelMap]="statusLabels" emptyMessage="ยังไม่มีข้อมูลสถานะงาน" />
+      <div class="analytics-divider"></div><h3>หน่วยธุรกิจ</h3><p class="panel-subtitle analytics-scope">ตามขอบเขตข้อมูลที่มีสิทธิ์ · {{ businessUnitTotal() | number }} รายการ</p>
+      <app-bar-list [data]="d.byBusinessUnit" emptyMessage="ยังไม่มีข้อมูลหน่วยธุรกิจ" />
+    </section>
+  </section>
+}

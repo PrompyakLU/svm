@@ -1,0 +1,12 @@
+[
+  { "id": "au1", "timestamp": "2026-10-07T06:00:05Z", "actor": "system", "action": "IMPORT_FINDINGS", "objectType": "ImportBatch", "objectId": "b1", "result": "Success (128 rows)", "requestId": "req-7f3a1" },
+  { "id": "au2", "timestamp": "2026-10-05T05:00:10Z", "actor": "system", "action": "STATUS_TRANSITION", "objectType": "VulnerabilityInstance", "objectId": "VUL-2026-0008", "result": "Closed → Reopened", "requestId": "req-9b2c4" },
+  { "id": "au3", "timestamp": "2026-10-03T02:00:00Z", "actor": "นภา (Dev)", "action": "STATUS_TRANSITION", "objectType": "VulnerabilityInstance", "objectId": "VUL-2026-0004", "result": "Remediated → PendingVerification", "requestId": "req-3d1e8" },
+  { "id": "au4", "timestamp": "2026-10-02T09:00:00Z", "actor": "ผู้ตรวจสอบ", "action": "VERIFY", "objectType": "VerificationRecord", "objectId": "vr10", "result": "Passed", "requestId": "req-5a7b2" },
+  { "id": "au5", "timestamp": "2026-09-30T01:00:00Z", "actor": "สมหญิง (SOC)", "action": "ASSIGN", "objectType": "VulnerabilityInstance", "objectId": "VUL-2026-0002", "result": "มอบหมายทีมโครงสร้างพื้นฐาน", "requestId": "req-2c9f1" },
+  { "id": "au6", "timestamp": "2026-09-29T07:00:00Z", "actor": "ประยุทธ (Dev)", "action": "COMMENT", "objectType": "VulnerabilityInstance", "objectId": "VUL-2026-0003", "result": "เพิ่มความคิดเห็น", "requestId": "req-8e4a3" },
+  { "id": "au7", "timestamp": "2026-09-10T04:00:00Z", "actor": "ผู้จัดการความเสี่ยง", "action": "RISK_ACCEPT", "objectType": "VulnerabilityInstance", "objectId": "VUL-2026-0009", "result": "ยอมรับความเสี่ยง (อนุมัติ)", "requestId": "req-1f6d9" },
+  { "id": "au8", "timestamp": "2026-09-08T06:00:00Z", "actor": "ผู้ดูแลระบบ", "action": "CONFIG_CHANGE", "objectType": "RiskWeight", "objectId": "Cvss", "result": "ปรับน้ำหนัก 0.30", "requestId": "req-4b8c7" },
+  { "id": "au9", "timestamp": "2026-09-01T06:00:00Z", "actor": "นภา (Dev)", "action": "STATUS_TRANSITION", "objectType": "VulnerabilityInstance", "objectId": "VUL-2026-0007", "result": "New → Remediated", "requestId": "req-6a2e5" },
+  { "id": "au10", "timestamp": "2026-10-01T08:12:10Z", "actor": "สมชาย (SOC)", "action": "LOGIN", "objectType": "User", "objectId": "somchai", "result": "สำเร็จ", "requestId": "req-0d9a8" }
+]

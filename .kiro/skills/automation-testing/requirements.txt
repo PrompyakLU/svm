@@ -1,0 +1,4 @@
+# Reporting_Engine (Python) dependencies — install with:
+#   pip install -r requirements.txt
+openpyxl>=3.1.0,<4.0.0
+python-docx>=1.1.0,<2.0.0

@@ -1,0 +1,18 @@
+© 2025. All rights reserved.
+
+LICENSE: Use of these materials (including all code, prompts, assets, files,
+and other components of this Skill) is governed by your agreement with the
+template owner. This is a proprietary template Skill provided for internal QA
+automation use within projects into which it is installed.
+
+ADDITIONAL RESTRICTIONS: Unless otherwise agreed in writing, users may not:
+
+- Redistribute, sublicense, or transfer these materials to any third party
+  outside of the projects into which the Skill is installed
+- Remove or alter this license notice
+
+The receipt, viewing, or possession of these materials does not convey or
+imply any license or right beyond those expressly granted above.
+
+The template owner retains all right, title, and interest in these materials,
+including all copyrights and other intellectual property rights.

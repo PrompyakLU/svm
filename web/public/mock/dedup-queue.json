@@ -1,0 +1,5 @@
+[
+  { "id": "d1", "findingName": "Log4j RCE (ตรวจพบซ้ำ)", "assetCode": "APP-REF-001", "cveId": "CVE-2021-44228", "location": "/api/log", "existingInstanceCode": "VUL-2026-0001", "matchScore": 0.98 },
+  { "id": "d2", "findingName": "OpenSSL buffer overflow", "assetCode": "SRV-PET-014", "cveId": "CVE-2022-3602", "location": "tcp/443", "existingInstanceCode": "VUL-2026-0002", "matchScore": 0.95 },
+  { "id": "d3", "findingName": "jQuery XSS", "assetCode": "APP-HQ-003", "cveId": "CVE-2020-11022", "location": "/assets/jquery.js", "existingInstanceCode": "VUL-2026-0009", "matchScore": 0.88 }
+]

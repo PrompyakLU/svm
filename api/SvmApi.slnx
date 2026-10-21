@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SvmApi.Api/SvmApi.Api.csproj" />
+    <Project Path="src/SvmApi.Application/SvmApi.Application.csproj" />
+    <Project Path="src/SvmApi.Domain/SvmApi.Domain.csproj" />
+    <Project Path="src/SvmApi.Infrastructure/SvmApi.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SvmApi.Tests/SvmApi.Tests.csproj" />
+  </Folder>
+</Solution>

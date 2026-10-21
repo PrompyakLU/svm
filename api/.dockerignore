@@ -1,0 +1,14 @@
+# build artifacts / local-only — ไม่ต้องเข้าไปใน build context
+**/bin/
+**/obj/
+**/TestResults/
+**/coverage/
+**/*.trx
+**/*.user
+_quarantine/
+.git/
+.vs/
+# secrets / local config — ห้ามเข้า image
+**/appsettings.*.local.json
+**/secrets.json
+*.log

@@ -1,0 +1,182 @@
+@if (showShell()) {
+@if (auth.accessDenied()) { <div class="access-denied" role="alert">Access denied. Your session is still active.</div> }
+@if (workshopData) { <div class="synthetic-data-label" role="note">Authenticated workshop view · synthetic server fixtures</div> }
+<div class="app-shell" [class.app-shell--collapsed]="sidebarCollapsed()">
+  <aside class="sidebar" aria-label="พื้นที่นำทาง">
+    <div class="sidebar__brand-row">
+      <a routerLink="/dashboard" class="brand" aria-label="SVM · ไปแดชบอร์ด">
+        <span class="brand__mark"><app-icon name="shield" [size]="28" /></span>
+        <span class="brand__copy">
+          <span class="brand__name">SVM</span>
+          <span class="brand__description">Security Vulnerability Management</span>
+        </span>
+      </a>
+      <button
+        type="button"
+        class="sidebar__collapse"
+        [attr.aria-expanded]="!sidebarCollapsed()"
+        [attr.aria-label]="sidebarCollapsed() ? 'ขยายเมนู' : 'ย่อเมนู'"
+        [title]="sidebarCollapsed() ? 'ขยายเมนู' : 'ย่อเมนู'"
+        (click)="toggleSidebar()"
+      >
+        <app-icon name="chevron-left" [size]="18" />
+      </button>
+    </div>
+
+    <nav class="sidebar__nav" aria-label="เมนูหลัก">
+      @for (item of navItems(); track item.path) {
+        @if (item.section === 'management' && item.path === '/admin') {
+          <div class="sidebar__divider" aria-hidden="true"></div>
+        }
+        <a
+          class="nav-link"
+          [routerLink]="item.path"
+          routerLinkActive="nav-link--active"
+          ariaCurrentWhenActive="page"
+          [attr.aria-label]="item.label"
+          [title]="item.label"
+        >
+          <app-icon [name]="item.icon" [size]="20" />
+          <span class="nav-link__label">{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar__workspace" aria-label="พื้นที่ทำงาน IRPC / MSC">
+      <app-icon name="building" [size]="20" />
+      <span class="sidebar__workspace-label">IRPC / MSC</span>
+    </div>
+    @if (auth.user(); as user) {
+      <div class="account-area">
+        <div class="account-identity" [title]="user.displayName + ' · ' + user.roles.join(', ')">
+          <app-icon name="user" [size]="20" /><span class="account-copy"><strong>{{ user.displayName }}</strong><small>{{ user.roles.join(', ') }}</small></span>
+        </div>
+        <button type="button" class="btn-ghost account-logout" (click)="logout()" aria-label="ออกจากระบบ" title="ออกจากระบบ"><app-icon name="arrow-right" [size]="18" /><span class="account-copy">ออกจากระบบ</span></button>
+      </div>
+    }
+  </aside>
+
+  <div class="app-content">
+    <header class="topbar">
+      <button
+        #mobileMenuButton
+        type="button"
+        class="topbar__menu-button"
+        aria-label="เปิดเมนูหลัก"
+        aria-controls="mobile-navigation"
+        [attr.aria-expanded]="menuOpen()"
+        (click)="openMobileMenu()"
+      >
+        <app-icon name="menu" [size]="22" />
+      </button>
+
+      <nav class="breadcrumbs" aria-label="เส้นทาง">
+        @for (crumb of breadcrumbs(); track $index) {
+          @if (!$first) {
+            <span class="breadcrumbs__separator" aria-hidden="true">/</span>
+          }
+          @if (crumb.path) {
+            <a [routerLink]="crumb.path">{{ crumb.label }}</a>
+          } @else {
+            <span aria-current="page">{{ crumb.label }}</span>
+          }
+        }
+      </nav>
+
+      <div class="topbar__actions">
+        <form class="search-form" role="search" (submit)="submitSearch($event, searchQuery.value)">
+          <label class="visually-hidden" for="global-search">ค้นหาช่องโหว่, CVE หรือ Asset</label>
+          <app-icon name="search" [size]="19" />
+          <input
+            #searchQuery
+            id="global-search"
+            name="q"
+            type="search"
+            [value]="searchValue()"
+            placeholder="ค้นหาช่องโหว่, CVE, Asset"
+            autocomplete="off"
+          />
+        </form>
+        <button
+          type="button"
+          class="theme-toggle"
+          (click)="theme.toggle()"
+          [attr.aria-pressed]="theme.theme() === 'dark'"
+          [attr.aria-label]="theme.theme() === 'dark' ? 'สลับเป็นธีมสว่าง' : 'สลับเป็นธีมมืด'"
+          [title]="theme.theme() === 'dark' ? 'ธีมมืด' : 'ธีมสว่าง'"
+        >
+          <app-icon [name]="theme.theme() === 'dark' ? 'moon' : 'sun'" [size]="18" />
+          <span>{{ theme.theme() === 'dark' ? 'DARK' : 'LIGHT' }}</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="shell-main" id="main-content" tabindex="-1">
+      <div class="shell-main__inner">
+        <router-outlet />
+      </div>
+    </main>
+
+    <footer class="shell-footer">
+      <span>{{ appName }} · ระบบบริหารจัดการช่องโหว่ด้านความมั่นคงปลอดภัย</span>
+      <span>IRPC / MSC</span>
+    </footer>
+  </div>
+</div>
+
+<dialog
+  #mobileDialog
+  id="mobile-navigation"
+  class="mobile-drawer"
+  aria-label="เมนูหลัก"
+  (click)="onMobileDialogClick($event)"
+  (cancel)="onMobileDialogCancel($event)"
+  (close)="onMobileDialogClose()"
+>
+  <div class="mobile-drawer__header">
+    <a routerLink="/dashboard" class="brand" aria-label="SVM · ไปแดชบอร์ด" (click)="closeMobileMenu()">
+      <span class="brand__mark"><app-icon name="shield" [size]="26" /></span>
+      <span class="brand__copy">
+        <span class="brand__name">SVM</span>
+        <span class="brand__description">Security Vulnerability Management</span>
+      </span>
+    </a>
+    <button type="button" class="icon-button" aria-label="ปิดเมนู" autofocus (click)="closeMobileMenu()">
+      <app-icon name="close" [size]="20" />
+    </button>
+  </div>
+  <nav class="mobile-drawer__nav" aria-label="เมนูหลัก">
+    @for (item of navItems(); track item.path) {
+      @if (item.section === 'management' && item.path === '/admin') {
+        <div class="sidebar__divider" aria-hidden="true"></div>
+      }
+      <a
+        class="nav-link"
+        [routerLink]="item.path"
+        routerLinkActive="nav-link--active"
+        ariaCurrentWhenActive="page"
+        (click)="closeMobileMenu()"
+      >
+        <app-icon [name]="item.icon" [size]="20" />
+        <span class="nav-link__label">{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+  <div class="mobile-drawer__workspace">
+    <app-icon name="building" [size]="20" />
+    <span>IRPC / MSC</span>
+  </div>
+  @if (auth.user(); as user) {
+    <div class="account-area">
+      <div class="account-identity"><app-icon name="user" [size]="20" /><span class="account-copy"><strong>{{ user.displayName }}</strong><small>{{ user.roles.join(', ') }}</small></span></div>
+      <button type="button" class="btn-outline account-logout" (click)="logout()">ออกจากระบบ <app-icon name="arrow-right" [size]="18" /></button>
+    </div>
+  }
+</dialog>
+} @else {
+  <router-outlet />
+}
+
+<app-toast-host />
+<app-confirm-host />
+

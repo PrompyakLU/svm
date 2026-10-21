@@ -1,0 +1,47 @@
+{
+  "totalOpen": 9,
+  "critical": 3,
+  "high": 3,
+  "slaBreaches": 2,
+  "kevOpen": 2,
+  "meanTimeToRemediateDays": 12,
+  "byRiskLevel": [
+    { "key": "Critical", "count": 3 },
+    { "key": "High", "count": 3 },
+    { "key": "Medium", "count": 2 },
+    { "key": "Low", "count": 1 },
+    { "key": "Info", "count": 0 }
+  ],
+  "byStatus": [
+    { "key": "New", "count": 1 },
+    { "key": "Confirmed", "count": 1 },
+    { "key": "Assigned", "count": 1 },
+    { "key": "InProgress", "count": 1 },
+    { "key": "PendingVerification", "count": 1 },
+    { "key": "Remediated", "count": 1 },
+    { "key": "Verified", "count": 1 },
+    { "key": "Reopened", "count": 1 },
+    { "key": "RiskAccepted", "count": 1 },
+    { "key": "Closed", "count": 1 }
+  ],
+  "byBusinessUnit": [
+    { "key": "โรงกลั่น", "count": 3 },
+    { "key": "ปิโตรเคมี", "count": 2 },
+    { "key": "สำนักงานใหญ่", "count": 3 },
+    { "key": "ท่าเรือ", "count": 2 }
+  ],
+  "slaByStatus": [
+    { "key": "OnTrack", "count": 5 },
+    { "key": "NearDue", "count": 2 },
+    { "key": "Breached", "count": 2 }
+  ],
+  "trendLast7Days": [
+    { "key": "01/10", "count": 5 },
+    { "key": "02/10", "count": 6 },
+    { "key": "03/10", "count": 7 },
+    { "key": "04/10", "count": 7 },
+    { "key": "05/10", "count": 9 },
+    { "key": "06/10", "count": 9 },
+    { "key": "07/10", "count": 9 }
+  ]
+}

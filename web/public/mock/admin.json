@@ -1,0 +1,51 @@
+{
+  "riskWeights": [
+    { "id": "w1", "factor": "CVSS", "weight": 0.30, "isActive": true },
+    { "id": "w2", "factor": "AssetCriticality", "weight": 0.20, "isActive": true },
+    { "id": "w3", "factor": "Kev", "weight": 0.20, "isActive": true },
+    { "id": "w4", "factor": "InternetExposure", "weight": 0.15, "isActive": true },
+    { "id": "w5", "factor": "ExploitAvailability", "weight": 0.15, "isActive": true },
+    { "id": "w6", "factor": "BusinessImpact", "weight": 0.15, "isActive": false },
+    { "id": "w7", "factor": "ExistingControl", "weight": 0.15, "isActive": false }
+  ],
+  "riskThresholds": [
+    { "riskLevel": "Critical", "minScore": 90, "maxScore": 100 },
+    { "riskLevel": "High", "minScore": 60, "maxScore": 89.99 },
+    { "riskLevel": "Medium", "minScore": 40, "maxScore": 59.99 },
+    { "riskLevel": "Low", "minScore": 10, "maxScore": 39.99 },
+    { "riskLevel": "Info", "minScore": 0, "maxScore": 9.99 }
+  ],
+  "slaPolicies": [
+    { "id": "s1", "riskLevel": "Critical", "remediationDays": 7, "verificationDays": 3 },
+    { "id": "s2", "riskLevel": "High", "remediationDays": 30, "verificationDays": 7 },
+    { "id": "s3", "riskLevel": "Medium", "remediationDays": 60, "verificationDays": 14 },
+    { "id": "s4", "riskLevel": "Low", "remediationDays": 90, "verificationDays": 21 }
+  ],
+  "statusTransitions": [
+    { "id": "t1", "fromStatus": "New", "toStatus": "Confirmed", "requiredPermission": "finding.confirm", "requiresEvidence": false, "requiresApproval": false, "isActive": true },
+    { "id": "t2", "fromStatus": "New", "toStatus": "FalsePositive", "requiredPermission": "finding.triage", "requiresEvidence": true, "requiresApproval": false, "isActive": true },
+    { "id": "t3", "fromStatus": "Confirmed", "toStatus": "Assigned", "requiredPermission": "finding.assign", "requiresEvidence": false, "requiresApproval": false, "isActive": true },
+    { "id": "t4", "fromStatus": "Assigned", "toStatus": "InProgress", "requiredPermission": "remediation.update", "requiresEvidence": false, "requiresApproval": false, "isActive": true },
+    { "id": "t5", "fromStatus": "InProgress", "toStatus": "Remediated", "requiredPermission": "remediation.update", "requiresEvidence": true, "requiresApproval": false, "isActive": true },
+    { "id": "t6", "fromStatus": "Remediated", "toStatus": "PendingVerification", "requiredPermission": "remediation.submit", "requiresEvidence": false, "requiresApproval": false, "isActive": true },
+    { "id": "t7", "fromStatus": "PendingVerification", "toStatus": "Verified", "requiredPermission": "verification.perform", "requiresEvidence": true, "requiresApproval": false, "isActive": true },
+    { "id": "t8", "fromStatus": "Verified", "toStatus": "Closed", "requiredPermission": "finding.close", "requiresEvidence": false, "requiresApproval": true, "isActive": true },
+    { "id": "t9", "fromStatus": "Closed", "toStatus": "Reopened", "requiredPermission": "finding.reopen", "requiresEvidence": false, "requiresApproval": false, "isActive": true },
+    { "id": "t10", "fromStatus": "Confirmed", "toStatus": "RiskAccepted", "requiredPermission": "riskacceptance.approve", "requiresEvidence": true, "requiresApproval": true, "isActive": true }
+  ],
+  "assignmentRules": [
+    { "id": "ar1", "matchType": "BusinessUnit", "matchValue": "โรงกลั่น", "assignTo": "ทีมโครงสร้างพื้นฐาน", "priority": 1, "isActive": true },
+    { "id": "ar2", "matchType": "BusinessUnit", "matchValue": "สำนักงานใหญ่", "assignTo": "ทีมพัฒนา HQ", "priority": 2, "isActive": true },
+    { "id": "ar3", "matchType": "AssetType", "matchValue": "Database", "assignTo": "ทีม DBA", "priority": 1, "isActive": true },
+    { "id": "ar4", "matchType": "BusinessUnit", "matchValue": "ท่าเรือ", "assignTo": "ทีมท่าเรือ", "priority": 3, "isActive": false }
+  ],
+  "users": [
+    { "id": "u1", "username": "somchai", "displayName": "สมชาย (SOC)", "email": "somchai@example.co.th", "roles": ["SOC Analyst"], "isActive": true },
+    { "id": "u2", "username": "somying", "displayName": "สมหญิง (SOC)", "email": "somying@example.co.th", "roles": ["SOC Lead"], "isActive": true },
+    { "id": "u3", "username": "wichai", "displayName": "วิชัย (Infra)", "email": "wichai@example.co.th", "roles": ["Remediation Owner"], "isActive": true },
+    { "id": "u4", "username": "napha", "displayName": "นภา (Dev)", "email": "napha@example.co.th", "roles": ["Remediation Owner"], "isActive": true },
+    { "id": "u5", "username": "auditor1", "displayName": "ผู้ตรวจสอบ", "email": "auditor@example.co.th", "roles": ["Verifier", "Auditor"], "isActive": true },
+    { "id": "u6", "username": "riskmgr", "displayName": "ผู้จัดการความเสี่ยง", "email": "risk@example.co.th", "roles": ["Risk Manager"], "isActive": true },
+    { "id": "u7", "username": "admin", "displayName": "ผู้ดูแลระบบ", "email": "admin@example.co.th", "roles": ["Administrator"], "isActive": true }
+  ]
+}

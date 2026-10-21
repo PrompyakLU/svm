@@ -1,0 +1,6 @@
+[
+  { "id": "b1", "fileName": "nessus-2026-10-07.csv", "status": "Success", "totalRows": 128, "successCount": 128, "failedCount": 0, "importedBy": "สมชาย (SOC)", "importedAt": "2026-10-07T06:00:00Z" },
+  { "id": "b2", "fileName": "qualys-2026-10-06.json", "status": "Partial", "totalRows": 90, "successCount": 85, "failedCount": 5, "importedBy": "สมหญิง (SOC)", "importedAt": "2026-10-06T22:00:00Z", "errorDetail": "5 แถวขาดฟิลด์บังคับ (assetCode)" },
+  { "id": "b3", "fileName": "openvas-2026-10-05.csv", "status": "Success", "totalRows": 64, "successCount": 64, "failedCount": 0, "importedBy": "สมชาย (SOC)", "importedAt": "2026-10-05T12:00:00Z" },
+  { "id": "b4", "fileName": "manual-pentest.json", "status": "Failed", "totalRows": 12, "successCount": 0, "failedCount": 12, "importedBy": "ผู้ทดสอบเจาะระบบ", "importedAt": "2026-10-04T09:00:00Z", "errorDetail": "รูปแบบไฟล์ไม่ถูกต้อง (JSON ไม่ตรง schema)" }
+]

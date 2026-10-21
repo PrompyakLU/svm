@@ -1,0 +1,9 @@
+# build artifacts / local-only — ไม่ต้องเข้า build context (image จะ build dist เอง)
+node_modules/
+dist/
+.angular/
+.vscode/
+.git/
+*.log
+npm-debug.log*
+*.tmp

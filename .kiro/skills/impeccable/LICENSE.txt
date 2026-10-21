@@ -1,0 +1,11 @@
+Impeccable is licensed under the Apache License, Version 2.0.
+Upstream: https://github.com/pbakaus/impeccable  (author: Paul Bakaus)
+
+This is a partial, Option-B local install for Kiro: only SKILL.md and two
+reference playbooks (operate.md, craft-floor.md) were reproduced, adapted to
+point at this project's existing SVM design system. The upstream deterministic
+detector binary, live-browser commands, and remaining reference playbooks are
+NOT included. For the full toolset run `npx impeccable install` from the project
+root per the upstream README.
+
+Full license text: https://www.apache.org/licenses/LICENSE-2.0

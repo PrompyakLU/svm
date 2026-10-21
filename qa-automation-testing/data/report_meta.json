@@ -1,0 +1,26 @@
+{
+  "company": "",
+  "system": "SVM — Security Vulnerability Management",
+  "author": "",
+  "version": "1.0",
+  "test_date": "2026-10-21",
+  "language": "th",
+  "environment": "local (dev)",
+  "app_url": "http://localhost:4200",
+  "api_base": "http://127.0.0.1:5181/api/v1",
+  "stack": "Angular 22 + Tailwind 4 / ASP.NET Core .NET 10 + EF Core 10 / SQL Server",
+  "target": "app-in-repo (web/ + api/)",
+  "scope_focus": "full (UI + API + Unit/Integration)",
+  "existing_test_cases": "b",
+  "devices": ["desktop"],
+  "sources_of_truth": [
+    ".aidlc/specs/svm/requirements.md",
+    ".aidlc/specs/svm/design.md",
+    ".aidlc/specs/svm/tasks.md",
+    "docs/ui/authentication.md",
+    "docs/ui/dashboard.md"
+  ],
+  "test_accounts": "local seed: admin (config mgmt), officer1 (vulnerability flow) — password via Seed:DemoPassword",
+  "tool": "playwright",
+  "environment_health": "PASS (2026-10-21): SQL Server :1433 (docker) + API :5181 (dotnet run, seed+migration done) ขึ้นแล้ว; smoke e2e API 85/85 PASS; Unit RiskScoringEngine 63/63 PASS; web :4200 กำลัง start สำหรับ UI layer"
+}

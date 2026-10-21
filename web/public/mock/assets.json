@@ -1,0 +1,8 @@
+[
+  { "id": "a1", "assetCode": "APP-REF-001", "name": "ระบบควบคุมการกลั่น (Refinery Control Portal)", "assetType": "Application", "ipAddress": "10.24.10.11", "hostname": "ref-ctrl-01", "environment": "Prod", "businessUnit": "โรงกลั่น", "criticality": "Critical", "internetExposure": false, "status": "Active" },
+  { "id": "a2", "assetCode": "SRV-PET-014", "name": "เซิร์ฟเวอร์ API ปิโตรเคมี", "assetType": "Server", "ipAddress": "10.24.11.14", "hostname": "pet-api-14", "environment": "Prod", "businessUnit": "ปิโตรเคมี", "criticality": "High", "internetExposure": true, "status": "Active" },
+  { "id": "a3", "assetCode": "APP-HQ-003", "name": "เว็บไซต์ภายในองค์กร (Intranet)", "assetType": "Application", "ipAddress": "10.24.1.3", "hostname": "hq-intranet", "environment": "Prod", "businessUnit": "สำนักงานใหญ่", "criticality": "Medium", "internetExposure": false, "status": "Active" },
+  { "id": "a4", "assetCode": "APP-PORT-007", "name": "ระบบจัดการท่าเรือ (Port Mgmt)", "assetType": "Application", "ipAddress": "10.24.20.7", "hostname": "port-mgmt-07", "environment": "Prod", "businessUnit": "ท่าเรือ", "criticality": "High", "internetExposure": true, "status": "Active" },
+  { "id": "a5", "assetCode": "APP-REF-009", "name": "ระบบรายงานการผลิต (Refinery Reporting)", "assetType": "Application", "ipAddress": "10.24.10.19", "hostname": "ref-report-09", "environment": "Prod", "businessUnit": "โรงกลั่น", "criticality": "Critical", "internetExposure": true, "status": "Active" },
+  { "id": "a6", "assetCode": "DB-PET-002", "name": "ฐานข้อมูลปิโตรเคมี", "assetType": "Database", "ipAddress": "10.24.11.2", "hostname": "pet-db-02", "environment": "Prod", "businessUnit": "ปิโตรเคมี", "criticality": "Critical", "internetExposure": false, "status": "Active" }
+]

@@ -1,0 +1,125 @@
+<main class="login-page">
+    <section class="login-layout" aria-label="เข้าสู่ระบบ SVM">
+    <div class="login-form-panel">
+      <a class="login-brand" href="/login" aria-label="SVM">
+        <span class="login-brand__mark"><app-icon name="shield" [size]="25" /></span>
+        <span class="login-brand__name">SVM</span>
+        <span class="login-brand__divider" aria-hidden="true"></span>
+        <span class="login-brand__product">Security Vulnerability Management</span>
+      </a>
+
+      <div class="login-content">
+        @if (auth.mode === 'demo') {
+          <div class="demo-banner" role="note">
+            <span class="demo-banner__dot" aria-hidden="true"></span>
+            <span>บัญชีตัวอย่างสำหรับเวิร์กช็อป · ระบบจำลอง</span>
+          </div>
+        }
+
+        <h1>เข้าสู่ระบบ SVM</h1>
+        <p class="login-intro">เข้าสู่ระบบเพื่อจัดการและติดตามช่องโหว่ด้านความปลอดภัย</p>
+
+        @if (sessionExpired) {
+          <div class="session-notice" role="status">
+            <app-icon name="clock" [size]="18" />
+            <span>เซสชันหมดอายุแล้ว กรุณาเข้าสู่ระบบอีกครั้ง</span>
+          </div>
+        }
+
+        @if (errorMessage(); as message) {
+          <div #authError class="login-error" role="alert" tabindex="-1">
+            <app-icon name="alert" [size]="19" />
+            <span>{{ message }}</span>
+          </div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="form-field">
+            <label for="login-username">ชื่อผู้ใช้</label>
+            <input
+              id="login-username"
+              name="username"
+              type="text"
+              formControlName="username"
+              autocomplete="username"
+              autocapitalize="none"
+              spellcheck="false"
+              [attr.aria-invalid]="submitted() && form.controls.username.invalid"
+              [attr.aria-describedby]="submitted() && form.controls.username.invalid ? 'username-error' : null"
+              (input)="clearError()"
+            />
+            @if (submitted() && form.controls.username.hasError('required')) {
+              <span id="username-error" class="field-error">กรุณากรอกชื่อผู้ใช้</span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="login-password">รหัสผ่าน</label>
+            <div class="password-control">
+              <input
+                id="login-password"
+                name="password"
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="password"
+                autocomplete="current-password"
+                [attr.aria-invalid]="submitted() && form.controls.password.invalid"
+                [attr.aria-describedby]="submitted() && form.controls.password.invalid ? 'password-error' : null"
+                (input)="clearError()"
+              />
+              <button
+                class="password-toggle"
+                type="button"
+                [attr.aria-label]="showPassword() ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'"
+                [attr.aria-pressed]="showPassword()"
+                (click)="togglePassword()"
+              >{{ showPassword() ? 'ซ่อน' : 'แสดง' }}</button>
+            </div>
+            @if (submitted() && form.controls.password.hasError('required')) {
+              <span id="password-error" class="field-error">กรุณากรอกรหัสผ่าน</span>
+            }
+          </div>
+
+          <button class="submit-button" type="submit" [disabled]="loading()" [attr.aria-busy]="loading()">
+            @if (loading()) {
+              <span class="loading-spinner" aria-hidden="true"></span>
+              <span>กำลังเข้าสู่ระบบ…</span>
+            } @else {
+              <span>เข้าสู่ระบบ</span>
+              <app-icon name="arrow-right" [size]="18" />
+            }
+          </button>
+        </form>
+
+        @if (auth.mode === 'demo') { <aside class="demo-credentials" aria-label="บัญชีตัวอย่างสำหรับเข้าสู่ระบบ">
+          <div class="demo-credentials__heading">
+            <app-icon name="user" [size]="17" />
+            <span>บัญชีตัวอย่างสาธารณะสำหรับเวิร์กช็อป</span>
+          </div>
+          <dl>
+            <div><dt>ชื่อผู้ใช้</dt><dd>admin</dd></div>
+            <div><dt>รหัสผ่าน</dt><dd>SvmDemo!2026</dd></div>
+          </dl>
+          <p>สำหรับสาธิตเท่านั้น เซสชันจำลองนี้ไม่ได้ป้องกัน API หรือข้อมูลตัวอย่างสาธารณะ</p>
+        </aside> }
+
+        <p class="login-footer">SVM · Security Vulnerability Management</p>
+      </div>
+    </div>
+
+    <aside class="brand-panel" aria-label="About SVM">
+      <div class="brand-panel__topline">
+        <span class="brand-panel__seal"><app-icon name="shield" [size]="26" /></span>
+        <span>SECURITY OPERATIONS</span>
+      </div>
+      <div class="brand-panel__message">
+        <p class="brand-panel__thai">เห็นความเสี่ยงชัดเจน<br />จัดการได้อย่างมั่นใจ</p>
+        <h2>Turn visibility<br />into action.</h2>
+        <p class="brand-panel__description">A clear view of vulnerability work, from first signal to verified resolution.</p>
+      </div>
+      <div class="brand-panel__bottom">
+        <span class="brand-panel__rule" aria-hidden="true"></span>
+        <span>PRIORITIZE · REMEDIATE · VERIFY</span>
+      </div>
+    </aside>
+  </section>
+</main>

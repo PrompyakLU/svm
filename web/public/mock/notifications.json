@@ -1,0 +1,7 @@
+[
+  { "id": "n1", "type": "SlaBreach", "title": "SLA เกินกำหนด: VUL-2026-0001", "body": "Log4Shell บน APP-REF-001 เกิน SLA 7 วัน", "createdAt": "2026-10-05T08:12:00Z", "read": false, "channel": "InApp" },
+  { "id": "n2", "type": "Reopened", "title": "ช่องโหว่ถูกเปิดใหม่: VUL-2026-0008", "body": "Spring4Shell พบซ้ำหลัง rescan", "createdAt": "2026-10-05T05:00:00Z", "read": false, "channel": "InApp" },
+  { "id": "n3", "type": "Assigned", "title": "มอบหมายงานใหม่: VUL-2026-0002", "body": "OpenSSL overflow มอบหมายให้ทีมโครงสร้างพื้นฐาน", "createdAt": "2026-09-30T01:00:00Z", "read": true, "channel": "Email" },
+  { "id": "n4", "type": "NearDue", "title": "ใกล้ครบ SLA: VUL-2026-0003", "body": "Apache path traversal ใกล้ครบกำหนดใน 5 วัน", "createdAt": "2026-10-06T09:00:00Z", "read": false, "channel": "InApp" },
+  { "id": "n5", "type": "VerificationPending", "title": "รอตรวจสอบ: VUL-2026-0004", "body": "SQL injection รอผู้ตรวจสอบอิสระ", "createdAt": "2026-10-03T02:00:00Z", "read": true, "channel": "Teams" }
+]

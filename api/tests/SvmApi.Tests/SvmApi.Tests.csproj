@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SvmApi.Api\SvmApi.Api.csproj" />
+    <ProjectReference Include="..\..\src\SvmApi.Application\SvmApi.Application.csproj" />
+    <ProjectReference Include="..\..\src\SvmApi.Domain\SvmApi.Domain.csproj" />
+    <ProjectReference Include="..\..\src\SvmApi.Infrastructure\SvmApi.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

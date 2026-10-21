@@ -1,0 +1,99 @@
+<header class="page-head"><div><p class="eyebrow">ผู้ดูแลระบบ</p><h1>ตั้งค่าระบบ</h1></div></header>
+<p class="notice">การตั้งค่ามีผลต่อการคำนวณความเสี่ยง SLA และการดำเนินงาน กรุณาตรวจทานก่อนบันทึก</p>
+@if (action.error()) { <p class="notice" role="alert">{{ action.error() }}</p> }
+@if (action.success()) { <p class="notice" role="status">{{ action.success() }}</p> }
+<div class="tabs" role="tablist" aria-label="การตั้งค่าระบบ">
+  @for (t of tabs; track t.key) { @if (action.can(t.permission)) { <button role="tab" class="tab" [attr.aria-selected]="tab() === t.key" [class.tab--on]="tab() === t.key" [disabled]="action.busy() || loading()" (click)="select(t.key)">{{ t.label }}</button> } }
+</div>
+<button type="button" class="btn-ghost" (click)="load()" [disabled]="loading() || action.busy() || !canEdit()">โหลดค่าล่าสุด (แทนที่ค่าที่กำลังแก้ไข)</button>
+@if (loading()) { <app-state-block mode="loading" /> }
+@else if (readError()) { <app-state-block mode="error" [message]="readError()" /> }
+@else {
+  <section class="panel">
+    <fieldset [disabled]="action.busy() || !canEdit()" style="border:0;padding:0;margin:0;min-width:0">
+    @switch (tab()) {
+      @case ('weights') {
+        <h2 class="panel__title">น้ำหนักความเสี่ยง</h2>
+        @if (weights; as w) {
+          <div class="table-wrap"><table class="data"><thead><tr><th>ปัจจัย</th><th>น้ำหนัก (0–1)</th><th>ใช้งาน</th></tr></thead><tbody>
+            @for (row of w.weights; track row.factor) { <tr><td>{{ row.factor }}</td><td><input class="input" type="number" min="0" max="1" step="0.0001" [attr.aria-label]="'น้ำหนัก ' + row.factor" [(ngModel)]="row.weight" /></td><td><input type="checkbox" [attr.aria-label]="'ใช้งาน ' + row.factor" [(ngModel)]="row.isActive" /></td></tr> }
+          </tbody></table></div><p>ผลรวมน้ำหนักที่ใช้งาน: <strong [class.invalid]="!weightsValid()">{{ weightSum() === weightSum() ? weightSum().toFixed(4) : '—' }}</strong> (ต้องเท่ากับ 1)@if (!weightsValid()) { <span class="hint-error"> · ผลรวมต้องเท่ากับ 1 และทุกค่าต้องอยู่ในช่วง 0–1</span> }</p>
+          <div class="controls"><button class="btn-outline" (click)="saveWeights(true)">ตรวจสอบน้ำหนัก</button><button class="btn" (click)="saveWeights()" [disabled]="!weightsValid()">บันทึกน้ำหนัก</button></div>
+        }
+      }
+      @case ('thresholds') {
+        <h2 class="panel__title">เกณฑ์ระดับความเสี่ยง</h2><p class="muted">ช่วงคะแนนต้องครอบคลุม 0–100 ต่อเนื่องครบทุกระดับ</p>
+        @if (thresholds; as t) {
+          <div class="table-wrap"><table class="data"><thead><tr><th>ระดับ</th><th>คะแนนต่ำสุด</th><th>คะแนนสูงสุด</th></tr></thead><tbody>
+            @for (row of t.thresholds; track row.riskLevel) { <tr><td>{{ row.riskLevel }}</td><td><input class="input" type="number" min="0" max="100" step="0.1" [attr.aria-label]="'คะแนนต่ำสุด ' + row.riskLevel" [(ngModel)]="row.minScore" /></td><td><input class="input" type="number" min="0" max="100" step="0.1" [attr.aria-label]="'คะแนนสูงสุด ' + row.riskLevel" [(ngModel)]="row.maxScore" /></td></tr> }
+          </tbody></table></div>@if (!thresholdsValid()) { <p class="hint-error">ช่วงคะแนนต้องครอบคลุม 0–100 ต่อเนื่อง ไม่ซ้อนหรือมีช่องว่าง และต่ำสุด &lt; สูงสุด</p> }<button class="btn" (click)="saveThresholds()" [disabled]="!thresholdsValid()">บันทึกเกณฑ์ระดับ</button>
+        }
+      }
+      @case ('transitions') {
+        <h2 class="panel__title">การเปลี่ยนสถานะ</h2>
+        @for (row of transitions; track row.id) {
+          <fieldset class="controls"><legend>{{ row.fromStatus }} → {{ row.toStatus }}</legend>
+            <ng-container [ngTemplateOutlet]="transitionFields" [ngTemplateOutletContext]="{ $implicit: row }" />
+            <button class="btn-outline" (click)="saveTransition(row)">บันทึก {{ row.fromStatus }} → {{ row.toStatus }}</button>
+          </fieldset>
+        } @empty { <p class="muted">ยังไม่มีการเปลี่ยนสถานะ</p> }
+        <h3>เพิ่มการเปลี่ยนสถานะ</h3><div class="controls">
+          <div class="field"><label for="transition-from">จากสถานะ</label><select id="transition-from" class="select" [(ngModel)]="transitionDraft.fromStatus">@for (s of statuses; track s) { <option [value]="s">{{ s }}</option> }</select></div>
+          <div class="field"><label for="transition-to">ไปสถานะ</label><select id="transition-to" class="select" [(ngModel)]="transitionDraft.toStatus">@for (s of statuses; track s) { <option [value]="s">{{ s }}</option> }</select></div>
+          <ng-container [ngTemplateOutlet]="transitionFields" [ngTemplateOutletContext]="{ $implicit: transitionDraft }" />
+          <button class="btn" (click)="saveTransition()" [disabled]="transitionDraft.fromStatus === transitionDraft.toStatus">เพิ่มการเปลี่ยนสถานะ</button>
+        </div>
+      }
+      @case ('sla') {
+        <h2 class="panel__title">นโยบาย SLA</h2><p class="muted">เวลาตอบรับ เริ่มงาน และแก้ไขเป็นชั่วโมงตามปฏิทินทำงาน</p>
+        @for (row of sla; track row.id) {
+          <fieldset><legend>{{ row.riskLevel }}</legend><div class="editor"><ng-container [ngTemplateOutlet]="slaFields" [ngTemplateOutletContext]="{ $implicit: row }" /></div>@if (!slaValid(row)) { <p class="hint-error">ชั่วโมงต้องเป็นค่าบวก และเรียงลำดับ ตอบรับ ≤ เริ่มงาน ≤ แก้ไข</p> }<div class="controls"><button class="btn-outline" (click)="saveSla(row)" [disabled]="!slaValid(row)">บันทึกนโยบาย</button></div></fieldset>
+        } @empty { <p class="muted">ยังไม่มีนโยบาย SLA</p> }
+        <h3>เพิ่มนโยบาย SLA</h3><div class="editor"><ng-container [ngTemplateOutlet]="slaFields" [ngTemplateOutletContext]="{ $implicit: slaDraft }" /></div>@if (!slaValid(slaDraft)) { <p class="hint-error">ชั่วโมงต้องเป็นค่าบวก และเรียงลำดับ ตอบรับ ≤ เริ่มงาน ≤ แก้ไข</p> }<div class="controls"><button class="btn" (click)="saveSla()" [disabled]="!slaValid(slaDraft)">เพิ่มนโยบาย SLA</button></div>
+      }
+      @case ('rules') {
+        <h2 class="panel__title">กฎมอบหมาย</h2><p class="muted">ระบุผู้ใช้หรือทีมเพียงอย่างเดียว และลำดับความสำคัญ</p>
+        @for (row of rules; track row.id) { <fieldset><legend>{{ row.matchType }}: {{ row.matchValue }}</legend><div class="editor"><ng-container [ngTemplateOutlet]="ruleFields" [ngTemplateOutletContext]="{ $implicit: row }" /></div>@if (!ruleValid(row)) { <p class="hint-error">ระบุค่าที่ตรงเงื่อนไข และเลือกผู้ใช้หรือทีมอย่างใดอย่างหนึ่ง</p> }<div class="controls"><button class="btn-outline" (click)="saveRule(row)" [disabled]="!ruleValid(row)">บันทึกกฎ</button></div></fieldset> } @empty { <p class="muted">ยังไม่มีกฎมอบหมาย</p> }
+        <h3>เพิ่มกฎมอบหมาย</h3><div class="editor"><ng-container [ngTemplateOutlet]="ruleFields" [ngTemplateOutletContext]="{ $implicit: ruleDraft }" /></div>@if (!ruleValid(ruleDraft)) { <p class="hint-error">ระบุค่าที่ตรงเงื่อนไข และเลือกผู้ใช้หรือทีมอย่างใดอย่างหนึ่ง (ไม่ใช่ทั้งคู่)</p> }<div class="controls"><button class="btn" (click)="saveRule()" [disabled]="!ruleValid(ruleDraft)">เพิ่มกฎมอบหมาย</button></div>
+      }
+      @case ('master') {
+        <h2 class="panel__title">ข้อมูลหลัก</h2><div class="controls"><div class="field"><label for="master-type">ประเภท</label><select id="master-type" class="select" [(ngModel)]="masterType" (ngModelChange)="load()">@for (t of masterTypes; track t.type) { <option [value]="t.type">{{ t.name }}{{ t.readOnly ? ' (อ่านอย่างเดียว)' : '' }}</option> }</select></div></div>
+        @if (masterType === 'business-calendar') { <p class="notice">รหัสใช้รูปแบบ YYYY-MM-DD · ช่องใช้งานหมายถึงเป็นวันทำงาน</p> }
+        @if (masterType === 'cvss-versions') { <p class="muted">ช่องใช้งานหมายถึงรองรับ CVSS version นี้</p> }
+        <div class="table-wrap"><table class="data"><thead><tr><th>รหัส</th><th>คำอธิบาย</th><th>{{ masterType === 'business-calendar' ? 'วันทำงาน' : 'ใช้งาน' }}</th><th>การดำเนินการ</th></tr></thead><tbody>
+          @for (row of masterItems; track row.id ?? row.code) {
+            <tr><td>{{ row.code }}</td><td><input class="input" [attr.aria-label]="'คำอธิบาย ' + row.code" [(ngModel)]="row.description" [disabled]="row.readOnly || isMasterReadOnly() || masterType === 'cvss-versions'" /></td><td><input type="checkbox" [attr.aria-label]="(masterType === 'business-calendar' ? 'วันทำงาน ' : 'ใช้งาน ') + row.code" [(ngModel)]="row.isActive" [disabled]="row.readOnly || isMasterReadOnly()" /></td><td>@if (!row.readOnly && !isMasterReadOnly()) { <button class="btn-outline" (click)="saveMaster(row)">บันทึก</button> } @else { อ่านอย่างเดียว }</td></tr>
+          } @empty { <tr><td colspan="4">ไม่มีข้อมูล</td></tr> }
+        </tbody></table></div>
+        @if (!isMasterReadOnly()) {
+          <h3>เพิ่มข้อมูลหลัก</h3><div class="controls"><div class="field"><label for="master-code">รหัส *</label><input id="master-code" class="input" [(ngModel)]="masterDraft.code" /></div>
+          @if (masterType !== 'cvss-versions') { <div class="field"><label for="master-description">คำอธิบาย</label><input id="master-description" class="input" [(ngModel)]="masterDraft.description" /></div> }
+          <label><input type="checkbox" [(ngModel)]="masterDraft.isActive" /> {{ masterType === 'business-calendar' ? 'เป็นวันทำงาน' : 'ใช้งาน' }}</label><button class="btn" (click)="saveMaster()" [disabled]="!masterDraft.code.trim()">เพิ่มข้อมูลหลัก</button></div>
+        }
+      }
+    }
+    </fieldset>
+  </section>
+}
+
+<ng-template #transitionFields let-row>
+  <div class="field"><label>สิทธิ์ที่ต้องมี<input class="input" [(ngModel)]="row.requiredPermission" /></label></div>
+  <label><input type="checkbox" [(ngModel)]="row.requiresEvidence" /> ต้องมีหลักฐาน</label><label><input type="checkbox" [(ngModel)]="row.requiresApproval" /> ต้องอนุมัติ</label><label><input type="checkbox" [(ngModel)]="row.isActive" /> ใช้งาน</label>
+</ng-template>
+<ng-template #slaFields let-row>
+  <div class="field"><label>ระดับความเสี่ยง<select class="select" [(ngModel)]="row.riskLevel">@for (level of riskLevels; track level) { <option [value]="level">{{ level }}</option> }</select></label></div>
+  <div class="field"><label>ความสำคัญของ Asset (ว่าง = ทั้งหมด)<input class="input" [(ngModel)]="row.assetCriticality" /></label></div>
+  <div class="field"><label>การเข้าถึงจากอินเทอร์เน็ต<select class="select" [(ngModel)]="row.internetExposure"><option [ngValue]="null">ทั้งหมด</option><option [ngValue]="true">เข้าถึงได้</option><option [ngValue]="false">เข้าถึงไม่ได้</option></select></label></div>
+  <div class="field"><label>ตอบรับภายใน (ชั่วโมง)<input class="input" type="number" min="1" step="1" [(ngModel)]="row.acknowledgeHours" /></label></div>
+  <div class="field"><label>เริ่มงานภายใน (ชั่วโมง)<input class="input" type="number" min="1" step="1" [(ngModel)]="row.startHours" /></label></div>
+  <div class="field"><label>แก้ไขภายใน (ชั่วโมง)<input class="input" type="number" min="1" step="1" [(ngModel)]="row.resolveHours" /></label></div>
+  <label><input type="checkbox" [(ngModel)]="row.kevOnly" /> เฉพาะ KEV</label><label><input type="checkbox" [(ngModel)]="row.isActive" /> ใช้งาน</label>
+</ng-template>
+<ng-template #ruleFields let-row>
+  <div class="field"><label>ประเภทเงื่อนไข<input class="input" [(ngModel)]="row.matchType" placeholder="BusinessUnit" /></label></div>
+  <div class="field"><label>ค่าที่ตรงเงื่อนไข<input class="input" [(ngModel)]="row.matchValue" /></label></div>
+  <div class="field"><label>รหัสผู้ใช้ (UUID)<input class="input" [(ngModel)]="row.assignToUserId" /></label></div>
+  <div class="field"><label>ชื่อทีม<input class="input" [(ngModel)]="row.assignToTeam" /></label></div>
+  <div class="field"><label>ลำดับความสำคัญ<input class="input" type="number" min="0" step="1" [(ngModel)]="row.priority" /></label></div>
+  <label><input type="checkbox" [(ngModel)]="row.isActive" /> ใช้งาน</label>
+</ng-template>

@@ -1,0 +1,29 @@
+# ---- OS / Editor ----
+Thumbs.db
+.DS_Store
+*.user
+*.suo
+.vs/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# ---- Secrets / local config ----
+.env
+.env.*
+appsettings.*.local.json
+*.local.json
+secrets.json
+
+# ---- .NET ----
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.pdb
+TestResults/
+coverage/
+*.trx
+*.log
+*.tmp

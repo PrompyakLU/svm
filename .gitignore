@@ -1,0 +1,43 @@
+# ---- OS / Editor ----
+Thumbs.db
+.DS_Store
+*.user
+*.suo
+.vs/
+.vscode/*
+!.vscode/extensions.json
+
+# ---- Secrets / local config (ห้าม commit — NFR-16, security policy) ----
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+*.local.json
+secrets.json
+
+# ---- .NET (api/) ----
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.pdb
+TestResults/
+coverage/
+*.trx
+
+# ---- Node / Angular (web/) ----
+node_modules/
+dist/
+.angular/
+*.log
+npm-debug.log*
+
+# ---- Build / tooling ----
+.idea/
+*.tmp
+
+# ---- Local dev tooling stores (relocated off C:) ----
+.devtools/
+.tmp/
+.nuget/
